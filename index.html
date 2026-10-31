@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>IELTS Reading: Noise | Nguyễn Văn Thắng</title>
+    <!-- Sử dụng font Merriweather cho bài đọc và Inter cho giao diện -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f7f6;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 15px;
+            color: #1e2a3e;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e9edf2;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b9c4cf;
+            border-radius: 10px;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .reading-panel {
+            width: 55%;
+            background: #ffffff;
+            overflow-y: auto;
+            padding: 32px 40px;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.03);
+            border-right: 1px solid #e6edf4;
+        }
+
+        .quiz-panel {
+            width: 45%;
+            background: #f8fafd;
+            overflow-y: auto;
+            padding: 28px 32px;
+        }
+
+        .reading-panel h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .reading-panel .passage-meta {
+            font-size: 0.8rem;
+            color: #5b7a9a;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        /* Bài đọc dùng font Merriweather để dễ đọc hơn */
+        .reading-panel p {
+            font-family: 'Merriweather', serif;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: #2c3e50;
+            margin-bottom: 1.4rem;
+            text-align: justify;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            width: fit-content;
+            border: 1px solid #eef2f8;
+        }
+        .brand-header i.fa-graduation-cap {
+            font-size: 1.4rem;
+            color: #2c7da0;
+        }
+        /* CSS cho link kết hợp */
+        .brand-header a {
+            color: #2c7da0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .brand-header a:hover {
+            color: #1a5b7a;
+            text-decoration: underline;
+        }
+        .brand-header a i.fa-facebook {
+            font-size: 1rem;
+            color: #1877F2; /* Màu xanh đặc trưng của Facebook */
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #eef2f8;
+        }
+
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0b3b4f;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2c9c6e;
+            display: inline-block;
+        }
+
+        .instruction {
+            background: #f0f6fa;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #2c4e6e;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            border-left: 3px solid #2c9c6e;
+        }
+
+        .summary-input {
+            display: inline-block;
+            width: 140px;
+            margin: 0 4px;
+            vertical-align: middle;
+        }
+        .summary-input input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 0.85rem;
+            border-radius: 40px;
+            border: 1.5px solid #dce5ec;
+            background: #fafbfc;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: 0.2s;
+            color: #1e2a3e;
+        }
+        .summary-input input:focus {
+            border-color: #2c9c6e;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(44,156,110,0.15);
+        }
+        .summary-input input:disabled {
+            background: #f4f7fb;
+            color: #6c86a3;
+            border-color: #e2edf5;
+        }
+
+        .truefalse-group {
+            margin-bottom: 24px;
+            background: #ffffff;
+            padding: 18px 20px;
+            border-radius: 20px;
+            border: 1px solid #eef2f8;
+            transition: 0.2s;
+        }
+        .truefalse-group:hover {
+            border-color: #d0dee9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .tf-question {
+            font-weight: 600;
+            margin-bottom: 14px;
+            font-size: 0.85rem;
+            color: #1e2f3c;
+            line-height: 1.6;
+        }
+        .tf-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-left: 8px;
+        }
+        .tf-options label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .tf-options input {
+            margin: 0;
+            transform: scale(1);
+            accent-color: #2c9c6e;
+            cursor: pointer;
+        }
+
+        .people-list {
+            background: #fafbfc;
+            border: 1px solid #e2edf5;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            color: #2c4e6e;
+        }
+        .people-list ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+        .people-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .people-list li strong {
+            color: #1a365d;
+            display: inline-block;
+            width: 20px;
+        }
+        
+        .match-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .match-text {
+            flex: 1;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            background: #fafbfc;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid #f0f4f8;
+        }
+        .match-select {
+            width: 80px;
+            padding: 10px;
+            border-radius: 40px;
+            border: 1.5px solid #dce5ec;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e2a3e;
+            background: #fafbfc;
+            accent-color: #2c9c6e;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .match-select:hover {
+            border-color: #b0c4d6;
+        }
+        .match-select:focus {
+            border-color: #2c9c6e;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(44,156,110,0.15);
+        }
+
+        .btn-submit {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(44, 125, 160, 0.2);
+        }
+        .btn-submit:hover {
+            background: #1f5e7e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(44, 125, 160, 0.3);
+        }
+        .btn-submit:disabled {
+            background: #b9cfdf;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .score-area {
+            background: #ffffff;
+            border-radius: 60px;
+            padding: 10px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2edf5;
+        }
+        .score-area span:first-child {
+            font-weight: 600;
+            color: #2c4e6e;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .score-badge {
+            background: #2c9c6e;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .reset-quiz {
+            background: #f0f4f9;
+            border: 1px solid #d0dee9;
+            color: #2c5a6e;
+            border-radius: 60px;
+            padding: 6px 18px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .reset-quiz:hover {
+            background: #e6edf4;
+            color: #1a365d;
+        }
+
+        .explanation-box {
+            background: #fef8e7;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-size: 0.75rem;
+            margin-top: 14px;
+            border-left: 4px solid #f4b942;
+            display: none;
+            line-height: 1.6;
+            color: #3a5a78;
+        }
+        .explanation-box.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .word-detail {
+            background: #fff2df;
+            border-radius: 14px;
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 0.7rem;
+            line-height: 1.5;
+        }
+        .notes-block {
+            font-size: 0.85rem;
+            line-height: 1.9;
+            color: #2c3e50;
+        }
+        .notes-item {
+            margin: 10px 0 12px 16px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .reading-panel, .quiz-panel {
+                width: 100%;
+                height: 50%;
+                padding: 24px;
+            }
+            body {
+                overflow: auto;
+                height: auto;
+            }
+            .dashboard {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="reading-panel">
+        <!-- Phần Header đã gộp link -->
+        <div class="brand-header">
+            <i class="fas fa-graduation-cap"></i>
+            <a href="https://www.facebook.com/nvtielts/" target="_blank">
+                <i class="fab fa-facebook"></i> Nguyễn Văn Thắng
+            </a>
+        </div>
+
+        <h1><i class="fas fa-volume-up"></i> NOISE</h1>
+        <div class="passage-meta">
+            <span><i class="far fa-clock"></i> ⏱️ 20 minutes</span>
+            <span><i class="fas fa-question-circle"></i> Questions 1-13</span>
+        </div>
+
+        <p>People living in a typical urban environment experience a wide range of sounds on a daily basis. In its <em>Guidelines for Community Noise</em> the World Health Organisation (WHO) declared, "Worldwide, noise-induced hearing impairment is the most prevalent irreversible occupational hazard, and it is estimated that 120 million people worldwide now have disabling hearing difficulties."</p>
+
+        <p>The growing noise pollution problem has many different sources. Booming population growth and the loss of rural land to urban sprawl both play a role. Other factors include the inability of authorities in many parts of the world to implement noise-reducing legislation: the electronic nature of our age, which encourages many noisy gadgets; the rising number of vehicles on street, and busier airports.</p>
+
+        <p>Sound intensity is measured in decibels (dB); the unit A-weighted dB (dBA) is used to indicate how humans hear a given sound. Zero dBA is considered the point at which a person begins to hear sound. A soft whisper at three feet equals 30 dBA, a busy freeway at 50 feet is around 80 dBA, and a chainsaw can reach 110 dBA. Mark Stephenson, a senior research audiologist at the National Institute for Occupational Safety and Health (NIOSH), says his agency's definition of hazardous noise is sound that exceeds 85 dBA, meaning the average noise exposure measured over a typical eight-hour workday.</p>
+
+        <p>In the United States, about 30 million workers are exposed to hazardous sound levels on the job, according to NIOSH. Noise in the US industry is an extremely difficult problem to monitor, acknowledges Craig Moulton, an industrial hygienist for the Occupational Safety and Health Administration (OSHA). Still, he says, OSHA does require that any employer with staff overexposed to noise safeguard those employees against the harmful impact of noise.</p>
+
+        <p>'For many people in the United States, noise has drastically affected the quality of their lives', says Arline Bronzaft, chair of the Noise Committee of the New York City Council of the Environment, and a psychologist who has done pioneering research on the effects of noise on children's reading ability. 'My daughter lives near La Guardia airport in New York City, and she can't open a window or enjoy her backyard in the summer because of the airplane noise'. The United States is not the only country where noise pollution is affecting the quality of life. In Japan noise pollution caused by public loudspeaker announcements and other forms of city noise has forced many Tokyo citizens to wear earplugs as they go about their daily lives. In Europe, about 65% of the population is exposed to ambient sound at levels above 55 dBA, while about 17% is exposed to levels about 65 dBA, according to the European Environment Agency.</p>
+
+        <p>Numerous scientific studies over the years have confirmed that exposure to certain levels of sound can damage hearing. NIOSH studies from the mid to late 1990s show that 90% of coal miners have hearing impairment by age 52- compare to 9% of the general population. NIOSH research also reveals that by age twenty-five, the average carpenter's hearing is equivalent to that of a fifty-year-old male who hasn't been exposed to noise. In 2001 researchers from the Center for Disease Control and Prevention reported that, based on audiometric testing of 5,249 children, an estimated 12.5% of American children have noise-induced hearing threshold shifts - or dulled hearing - in one or both ears. Most children with dulled hearing have only limited hearing damage, but continued exposure to excessive noise can lead to difficulties with high-frequency sound discrimination.</p>
+
+        <p>The effects of sound don't stop with the ears. The non-auditory effects of noise were noted as far back as 1930s by a study published by South and D L Laird in the Journal of the Acoustical Society of America. The results showed that exposure to noise caused stomach problems in healthy human beings.</p>
+
+        <p>Noise has also been shown to affect learning ability. In 1975, Bronzaft collaborated on a study of children in a school near a train track that showed how exposure to noise affects reading ability. Half of the students in the study were in classrooms facing the train track and the other half were in classrooms in the school's quieter section. The findings were that students on the quieter side performed better on reading tests. Bronzaft and the school principal persuaded the school board to have acoustical tiles installed in the classrooms adjacent to the tracks. The Transit Authority also undertook work on the track near the school in order to reduce noise levels. A follow-up study in 1981 found that children's reading scores improved after these interventions were put in place.</p>
+
+        <p>Anti-noise activists say that Europe and several countries in Asia are more advanced than the United States in terms of combating noise. 'Population pressure has prompted Europe to move more quickly on the noise issue,' says Ken Hume, a principal lecturer in human physiology at the Manchester Metropolitan University in England. European cities with at least 250,000 people are developing noise maps of those cities to help leaders determine noise pollution strategies. Paris has already prepared its first noise maps. The map data will be fed into computer models that will help test the sound impact of new road layouts or buildings before construction begins.</p>
+
+        <p>Bronzaft stresses that governments worldwide need to direct more financial resources towards studies investigating the effects of noise, and do a better job coordinating their noise pollution efforts, so they can establish health and environmental policies based on solid scientific research.</p>
+    </div>
+
+    <div class="quiz-panel">
+        <div class="score-area">
+            <span><i class="fas fa-chart-line"></i> IELTS READING SCORE</span>
+            <span class="score-badge" id="scoreDisplay">0 / 13</span>
+            <button class="reset-quiz" id="resetQuizBtn"><i class="fas fa-undo-alt"></i> Reset</button>
+        </div>
+        
+        <div id="quiz-container">
+            <!-- Questions 1-4: Sentence Completion -->
+            <div class="quiz-card">
+                <div class="section-title">📝 Questions 1–4</div>
+                <div class="instruction">
+                    Complete the sentences below.<br>
+                    Choose <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> from the passage for each answer.
+                </div>
+                <div class="notes-block">
+                    <div class="notes-item"><strong>1.</strong> Experts consider noise levels to be harmful if they go above <span class="summary-input"><input type="text" id="inp-1" placeholder="1"></span>.</div>
+                    <div class="notes-item"><strong>2.</strong> Children with "dulled hearing" may eventually have trouble distinguishing <span class="summary-input"><input type="text" id="inp-2" placeholder="2"></span> sounds.</div>
+                    <div class="notes-item"><strong>3.</strong> Early research into physical effects other than hearing problems revealed that adults may suffer from <span class="summary-input"><input type="text" id="inp-3" placeholder="3"></span> if exposed to noise.</div>
+                    <div class="notes-item"><strong>4.</strong> Some European cities are creating <span class="summary-input"><input type="text" id="inp-4" placeholder="4"></span> in order to help governments develop noise policies.</div>
+                </div>
+                <div id="exp-group-1-4" class="explanation-box"></div>
+            </div>
+
+            <!-- Questions 5-10: Matching People -->
+            <div class="quiz-card">
+                <div class="section-title">👥 Questions 5–10</div>
+                <div class="instruction">
+                    Look at the following statements (Questions 5-10) and the list of people and organisations below.<br>
+                    Match each statement with the correct person or organisation, <strong>A–E</strong>.<br>
+                    <em>NB You may use any letter more than once.</em>
+                </div>
+                
+                <div class="people-list">
+                    <strong>List of People and Organisations</strong>
+                    <ul>
+                        <li><strong>A</strong> World Health Organisation (WHO)</li>
+                        <li><strong>B</strong> National Institute for Occupational Safety and Health (NIOSH)</li>
+                        <li><strong>C</strong> Craig Moulton</li>
+                        <li><strong>D</strong> Arline Bronzaft</li>
+                        <li><strong>E</strong> Center for Disease Control and Prevention</li>
+                    </ul>
+                </div>
+
+                <div id="people-matching">
+                    <div class="match-row">
+                        <div class="match-text"><strong>5.</strong> A significant proportion of American children have suffered some hearing loss as a result of exposure to noise.</div>
+                        <select class="match-select" data-q="5"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-5" class="explanation-box"></div>
+
+                    <div class="match-row">
+                        <div class="match-text"><strong>6.</strong> Noise in our environment can affect the kind of lifestyle we have.</div>
+                        <select class="match-select" data-q="6"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-6" class="explanation-box"></div>
+
+                    <div class="match-row">
+                        <div class="match-text"><strong>7.</strong> American companies are expected to protect workers from the effects of excessive noise.</div>
+                        <select class="match-select" data-q="7"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-7" class="explanation-box"></div>
+
+                    <div class="match-row">
+                        <div class="match-text"><strong>8.</strong> Authorities should increase funding for noise pollution research.</div>
+                        <select class="match-select" data-q="8"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-8" class="explanation-box"></div>
+
+                    <div class="match-row">
+                        <div class="match-text"><strong>9.</strong> Permanent hearing loss caused by noise is the most commonly occurring danger in the global workplace today.</div>
+                        <select class="match-select" data-q="9"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-9" class="explanation-box"></div>
+
+                    <div class="match-row">
+                        <div class="match-text"><strong>10.</strong> Workers in certain occupations in the US have high rates of hearing damage.</div>
+                        <select class="match-select" data-q="10"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option></select>
+                    </div>
+                    <div id="exp-10" class="explanation-box"></div>
+                </div>
+            </div>
+
+            <!-- Questions 11-13: Multiple Choice -->
+            <div class="quiz-card">
+                <div class="section-title">🔤 Questions 11–13</div>
+                <div class="instruction">
+                    Choose the correct letter, <strong>A, B, C or D</strong>.
+                </div>
+                
+                <!-- Q11 -->
+                <div class="truefalse-group">
+                    <div class="tf-question">11. As a result of the findings from Bronzaft's train track study</div>
+                    <div class="tf-options" style="flex-direction: column; gap: 10px;">
+                        <label><input type="radio" name="q11" value="A"> A. the school moved the classrooms located near the track.</label>
+                        <label><input type="radio" name="q11" value="B"> B. the track was treated to make it less noisy.</label>
+                        <label><input type="radio" name="q11" value="C"> C. the classrooms facing the track were no longer used.</label>
+                        <label><input type="radio" name="q11" value="D"> D. the amount of traffic on the track was reduced.</label>
+                    </div>
+                    <div id="exp-11" class="explanation-box"></div>
+                </div>
+
+                <!-- Q12 -->
+                <div class="truefalse-group">
+                    <div class="tf-question">12. According to the passage, European countries are examining how noise levels will be affected by</div>
+                    <div class="tf-options" style="flex-direction: column; gap: 10px;">
+                        <label><input type="radio" name="q12" value="A"> A. population distribution.</label>
+                        <label><input type="radio" name="q12" value="B"> B. the size of cities.</label>
+                        <label><input type="radio" name="q12" value="C"> C. street design.</label>
+                        <label><input type="radio" name="q12" value="D"> D. the purpose of tower blocks.</label>
+                    </div>
+                    <div id="exp-12" class="explanation-box"></div>
+                </div>
+
+                <!-- Q13 -->
+                <div class="truefalse-group">
+                    <div class="tf-question">13. Which of the following is the most suitable title for Reading Passage 1?</div>
+                    <div class="tf-options" style="flex-direction: column; gap: 10px;">
+                        <label><input type="radio" name="q13" value="A"> A. Effects of noise on workers' job performance</label>
+                        <label><input type="radio" name="q13" value="B"> B. The cities most effective at reducing noise</label>
+                        <label><input type="radio" name="q13" value="C"> C. Educating workers about noise</label>
+                        <label><input type="radio" name="q13" value="D"> D. Living in a noisy world</label>
+                    </div>
+                    <div id="exp-13" class="explanation-box"></div>
+                </div>
+            </div>
+
+            <button id="submitQuizBtn" class="btn-submit">✅ Check Answers & Show Explanations</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CORRECT = {
+        q1: "85 dba",
+        q2: "high-frequency",
+        q3: "stomach problems",
+        q4: "noise maps",
+        q5: "E",
+        q6: "D",
+        q7: "C",
+        q8: "D",
+        q9: "A",
+        q10: "B",
+        q11: "B",
+        q12: "C",
+        q13: "D"
+    };
+
+    let submitted = false;
+
+    function getRadioValue(name) {
+        const radio = document.querySelector(`input[name="${name}"]:checked`);
+        return radio ? radio.value : "";
+    }
+
+    function collectAnswers() {
+        return {
+            q1: document.getElementById("inp-1")?.value.trim().toLowerCase() || "",
+            q2: document.getElementById("inp-2")?.value.trim().toLowerCase() || "",
+            q3: document.getElementById("inp-3")?.value.trim().toLowerCase() || "",
+            q4: document.getElementById("inp-4")?.value.trim().toLowerCase() || "",
+            q5: document.querySelector(`.match-select[data-q="5"]`)?.value || "",
+            q6: document.querySelector(`.match-select[data-q="6"]`)?.value || "",
+            q7: document.querySelector(`.match-select[data-q="7"]`)?.value || "",
+            q8: document.querySelector(`.match-select[data-q="8"]`)?.value || "",
+            q9: document.querySelector(`.match-select[data-q="9"]`)?.value || "",
+            q10: document.querySelector(`.match-select[data-q="10"]`)?.value || "",
+            q11: getRadioValue("q11"),
+            q12: getRadioValue("q12"),
+            q13: getRadioValue("q13")
+        };
+    }
+
+    function getExplanation(qId, userAns, correctAns, type) {
+        const details = {
+            q1: "Đoạn 3: Mark Stephenson... định nghĩa của cơ quan ông về tiếng ồn nguy hiểm là âm thanh vượt quá <strong>85 dBA</strong>. Từ khóa 'harmful' đồng nghĩa với 'hazardous'.",
+            q2: "Đoạn 6: ...tiếp xúc liên tục với tiếng ồn quá mức có thể dẫn đến khó khăn trong việc phân biệt âm thanh <strong>tần số cao (high-frequency)</strong>. Từ 'trouble distinguishing' đồng nghĩa với 'difficulties with... discrimination'.",
+            q3: "Đoạn 7: Kết quả nghiên cứu năm 1930 cho thấy việc tiếp xúc với tiếng ồn gây ra các <strong>vấn đề về dạ dày (stomach problems)</strong> ở những người khỏe mạnh.",
+            q4: "Đoạn 9: Các thành phố châu Âu... đang phát triển <strong>bản đồ tiếng ồn (noise maps)</strong>... để giúp các nhà lãnh đạo xác định chiến lược ô nhiễm tiếng ồn. 'develop noise policies' tương ứng với 'determine noise pollution strategies'.",
+            q5: "Trung tâm Kiểm soát và Phòng ngừa Dịch bệnh (E): Đoạn 6 báo cáo rằng ước tính 12,5% trẻ em Mỹ bị suy giảm thính lực do tiếng ồn.",
+            q6: "Arline Bronzaft (D): Đoạn 5 trích dẫn lời bà nói rằng tiếng ồn đã ảnh hưởng nghiêm trọng đến <strong>chất lượng cuộc sống (quality of lives)</strong>. 'Quality of lives' tương đương với 'kind of lifestyle'.",
+            q7: "Craig Moulton (C): Đoạn 4 nói rằng OSHA (đại diện bởi Moulton) yêu cầu bất kỳ người sử dụng lao động nào có nhân viên tiếp xúc quá nhiều với tiếng ồn phải <strong>bảo vệ nhân viên (safeguard those employees)</strong>. 'American companies' = 'employer'.",
+            q8: "Arline Bronzaft (D): Đoạn 10 nhấn mạnh rằng chính phủ trên toàn thế giới cần hướng <strong>nhiều nguồn lực tài chính hơn (more financial resources)</strong> cho các nghiên cứu điều tra tác động của tiếng ồn. 'increase funding' = 'more financial resources'.",
+            q9: "Tổ chức Y tế Thế giới - WHO (A): Đoạn 1 tuyên bố suy giảm thính lực do tiếng ồn là mối nguy hại nghề nghiệp <strong>phổ biến nhất (most prevalent)</strong>. 'most prevalent' = 'most commonly occurring'.",
+            q10: "Viện Quốc gia về An toàn và Sức khỏe Nghề nghiệp - NIOSH (B): Đoạn 6 dẫn nghiên cứu cho thấy 90% <strong>thợ mỏ (coal miners)</strong> bị suy giảm thính lực. 'certain occupations' chính là 'coal miners'.",
+            q11: "Đáp án B. Đoạn 8 viết: 'Cơ quan Giao thông cũng đã tiến hành cải tạo tuyến đường sắt gần trường (undertook work on the track) nhằm giảm mức độ tiếng ồn (in order to reduce noise levels)'. A sai vì trường chỉ lắp thêm gạch tiêu âm chứ không di chuyển lớp học. C sai vì không nói lớp học bị bỏ trống. D sai vì không nói giảm lưu lượng tàu.",
+            q12: "Đáp án C. Đoạn 9 nói về dữ liệu bản đồ sẽ giúp kiểm tra tác động âm thanh của <strong>cách bố trí đường mới (new road layouts)</strong>. 'new road layouts' đồng nghĩa với 'street design'.",
+            q13: "Đáp án D. Bài đọc đề cập toàn diện từ nguồn gốc tiếng ồn, mức độ đo lường, ảnh hưởng sức khỏe đến các nỗ lực của chính phủ toàn cầu. 'Living in a noisy world' mang tính khái quát cao nhất. A, B, C chỉ nói đến một khía cạnh nhỏ."
+        };
+        
+        let status = (userAns === correctAns || userAns === correctAns.toLowerCase()) ? "✅ Correct" : "❌ Incorrect";
+        let userDisplay = (userAns === "") ? "(not answered)" : userAns;
+        
+        if (type === "person") {
+            const nameMap = {A:"WHO",B:"NIOSH",C:"Craig Moulton",D:"Arline Bronzaft",E:"CDC"};
+            const correctName = nameMap[correctAns] || correctAns;
+            return `<strong>${status}</strong><br>Lựa chọn của bạn: ${userAns || "none"} (${nameMap[userAns] || ''}) | Đáp án đúng: ${correctAns} (${correctName})<br><br>📖 ${details[qId]}`;
+        }
+        if (type === "completion") {
+            return `<strong>${status}</strong><br>Câu trả lời của bạn: "${userDisplay}" | Đáp án đúng: "${correctAns}"<br><br>📖 ${details[qId]}`;
+        }
+        return `<strong>${status}</strong><br>Lựa chọn của bạn: ${userAns || "none"} | Đáp án đúng: ${correctAns}<br><br>📖 ${details[qId]}`;
+    }
+
+    function evaluateQuiz() {
+        if (submitted) return;
+        const user = collectAnswers();
+        let totalScore = 0;
+        
+        // Q1-4 Completion
+        let summaryHtml14 = `<strong>📖 Giải thích chi tiết (Câu 1-4):</strong><br><br>`;
+        for (let i=1; i<=4; i++) {
+            const q = `q${i}`;
+            const correct = CORRECT[q];
+            const userAns = user[q];
+            const isCorrect = (userAns === correct.toLowerCase());
+            if (isCorrect) totalScore++;
+            
+            let status = isCorrect ? "✅" : "❌";
+            summaryHtml14 += `<p><strong>Câu ${i}:</strong> Bạn điền: "${userAns || 'để trống'}" → ${status} (Đúng: ${correct})<br><span style="font-size:0.75rem; color:#4a627a;">${getExplanation(q, userAns, correct, "completion").split('📖 ')[1]}</span></p>`;
+        }
+        document.getElementById("exp-group-1-4").innerHTML = summaryHtml14;
+        document.getElementById("exp-group-1-4").classList.add("show");
+
+        // Q5-10 People Matching
+        for (let i=5; i<=10; i++) {
+            const q = `q${i}`;
+            const correct = CORRECT[q];
+            const userAns = user[q];
+            const isCorrect = (userAns === correct);
+            if (isCorrect) totalScore++;
+            
+            const expDiv = document.getElementById(`exp-${i}`);
+            if (expDiv) {
+                expDiv.innerHTML = getExplanation(q, userAns, correct, "person");
+                expDiv.classList.add("show");
+            }
+        }
+
+        // Q11-13 MCQ
+        for (let i=11; i<=13; i++) {
+            const q = `q${i}`;
+            const correct = CORRECT[q];
+            const userAns = user[q];
+            const isCorrect = (userAns === correct);
+            if (isCorrect) totalScore++;
+            
+            const expDiv = document.getElementById(`exp-${i}`);
+            if (expDiv) {
+                expDiv.innerHTML = getExplanation(q, userAns, correct, "mcq");
+                expDiv.classList.add("show");
+            }
+        }
+
+        document.getElementById("scoreDisplay").innerText = `${totalScore} / 13`;
+        
+        // Vô hiệu hóa tất cả các ô nhập liệu sau khi nộp bài
+        document.querySelectorAll('input[type="radio"], input[type="text"], select, .btn-submit').forEach(el => {
+            if (el.id !== "resetQuizBtn") el.disabled = true;
+        });
+        submitted = true;
+    }
+
+    function resetQuiz() {
+        submitted = false;
+        // Xóa các ô điền từ
+        for (let i=1; i<=4; i++) {
+            const inp = document.getElementById(`inp-${i}`);
+            if (inp) inp.value = "";
+        }
+        const expGroup = document.getElementById("exp-group-1-4");
+        if (expGroup) expGroup.classList.remove("show");
+
+        // Xóa các ô chọn người
+        for (let i=5; i<=10; i++) {
+            const sel = document.querySelector(`.match-select[data-q="${i}"]`);
+            if (sel) sel.value = "";
+            const expDiv = document.getElementById(`exp-${i}`);
+            if (expDiv) expDiv.classList.remove("show");
+        }
+
+        // Xóa các ô trắc nghiệm
+        for (let i=11; i<=13; i++) {
+            const radios = document.querySelectorAll(`input[name="q${i}"]`);
+            radios.forEach(r => r.checked = false);
+            const expDiv = document.getElementById(`exp-${i}`);
+            if (expDiv) expDiv.classList.remove("show");
+        }
+
+        // Kích hoạt lại các phần tử
+        document.querySelectorAll('input[type="radio"], input[type="text"], select').forEach(el => el.disabled = false);
+        const submitBtn = document.getElementById("submitQuizBtn");
+        if (submitBtn) submitBtn.disabled = false;
+        document.getElementById("scoreDisplay").innerText = "0 / 13";
+    }
+
+    document.getElementById("submitQuizBtn")?.addEventListener("click", evaluateQuiz);
+    document.getElementById("resetQuizBtn")?.addEventListener("click", resetQuiz);
+</script>
+</body>
+</html>
